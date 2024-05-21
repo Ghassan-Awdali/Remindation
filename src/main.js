@@ -1,8 +1,11 @@
 const { app, BrowserWindow } = require('electron/main')
 const path = require('node:path')
 
-function createWindow () {
-  const win = new BrowserWindow({
+const isMac = process.platform === 'darwin';
+const isDev = process.env.NODE_ENV !== 'development';
+
+function createMainWindow () {
+  const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -10,21 +13,25 @@ function createWindow () {
     }
   })
 
-  win.loadFile('index.html')
+  if(isDev){
+    mainWindow.webContents.openDevTools();
+  }
+
+  mainWindow.loadFile('src/index.html')
 }
 
 app.whenReady().then(() => {
-  createWindow()
+  createMainWindow()
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
+      createMainWindow()
     }
   })
 })
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  if (!isMac) {
     app.quit()
   }
 })
