@@ -17,7 +17,7 @@ function createMainWindow () {
     mainWindow.webContents.openDevTools();
   }
 
-  mainWindow.loadFile('src/index.html')
+  mainWindow.loadFile('src/renderer/index.html')
 }
 
 app.whenReady().then(() => {
